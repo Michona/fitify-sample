@@ -1,20 +1,25 @@
 package com.michona.fitify.feature.detail
 
 import androidx.lifecycle.ViewModel
-import com.michona.fitify.domain.data.Exercise
+import androidx.lifecycle.viewModelScope
 import com.michona.fitify.domain.data.ExerciseID
+import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.domain.data.PackID
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.michona.fitify.domain.repository.ExerciseRepository
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 
-class ExerciseDetailViewModel(private val packId: PackID, private val exerciseId: ExerciseID) : ViewModel() {
+class ExerciseDetailViewModel(private val packId: PackID, private val exerciseId: ExerciseID, private val exerciseRepository: ExerciseRepository) : ViewModel() {
 
-    private val _data: MutableStateFlow<Exercise> = MutableStateFlow(Exercise("HEEEY"))
-    val data: StateFlow<Exercise> = _data.asStateFlow()
-
-    init {
-        // TODO: HERE we calculate the model
-        _data.value = Exercise("pack: $packId --- ex: $exerciseId")
-    }
+    val uiModel: StateFlow<ExerciseModel?> =
+        exerciseRepository.exercises.map {
+            Timber.d("$packId ---- $exerciseId")
+            Timber.d("${it.size}")
+            it.find { model ->
+                model.id == exerciseId
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 }

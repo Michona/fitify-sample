@@ -4,7 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors
 import androidx.compose.material.ripple.LocalRippleTheme
-import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -26,7 +25,7 @@ fun FitifyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable
     MaterialTheme(
         colors = LightColorPalette,
         typography = Typography,
-        shapes = Shapes
+        shapes = Shapes,
     ) {
         CompositionLocalProvider(LocalRippleTheme provides SecondaryRippleTheme) {
             content()
@@ -39,13 +38,13 @@ private object SecondaryRippleTheme : RippleTheme {
     @Composable
     override fun defaultColor() = RippleTheme.defaultRippleColor(
         contentColor = Blue700,
-        lightTheme = MaterialTheme.colors.isLight
+        lightTheme = MaterialTheme.colors.isLight,
     )
 
     // TODO: Increase pressed alpha?
     @Composable
     override fun rippleAlpha() = RippleTheme.defaultRippleAlpha(
         contentColor = Color.White,
-        lightTheme = MaterialTheme.colors.isLight
+        lightTheme = MaterialTheme.colors.isLight,
     )
 }

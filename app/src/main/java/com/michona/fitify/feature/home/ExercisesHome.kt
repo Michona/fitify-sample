@@ -21,50 +21,45 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.michona.fitify.R
-import com.michona.fitify.domain.data.Exercise
+import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.navigation.Destination
 import com.michona.fitify.ui.common.LoadingContent
 import com.michona.fitify.ui.theme.FitifyTheme
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
 fun ExercisesHome(exerciseViewModel: ExercisesViewModel = koinViewModel(), onDetailClicked: (Destination.ExerciseDetail) -> Unit) {
-    val data = exerciseViewModel.data.collectAsStateWithLifecycle()
-    val isLoading = exerciseViewModel.isLoading.collectAsStateWithLifecycle()
+    val uiModel = exerciseViewModel.uiModel.collectAsStateWithLifecycle()
 
     ExercisesHome(
-        data = data.value,
+        uiModel = uiModel.value,
         query = exerciseViewModel.exerciseQuery,
         onQueryUpdate = exerciseViewModel::updateQuery,
-        isLoading = isLoading.value,
         onRefresh = exerciseViewModel::refresh,
-        onDetailClicked = onDetailClicked
+        onDetailClicked = onDetailClicked,
     )
 }
 
 @Composable
 private fun ExercisesHome(
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false, // TODO: default values?
+    uiModel: ExercisesUIModel,
     query: String,
-    data: List<Exercise> = listOf(), // TODO: rename
     onRefresh: () -> Unit = {},
     onQueryUpdate: (String) -> Unit,
-    onDetailClicked: (Destination.ExerciseDetail) -> Unit
+    onDetailClicked: (Destination.ExerciseDetail) -> Unit,
 ) {
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.primary)
+            .background(MaterialTheme.colors.primary),
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = stringResource(id = R.string.content_descr_logo),
             modifier = modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 8.dp)
+                .padding(top = 8.dp),
         )
 
         /* todo: should be moved in a reusable container for text fields.  */
@@ -82,15 +77,17 @@ private fun ExercisesHome(
                 cursorColor = MaterialTheme.colors.onPrimary,
                 textColor = MaterialTheme.colors.onPrimary,
                 focusedBorderColor = MaterialTheme.colors.primary,
-                unfocusedBorderColor = MaterialTheme.colors.primary
+                unfocusedBorderColor = MaterialTheme.colors.primary,
             ),
             onValueChange = {
                 onQueryUpdate(it)
-            }
+            },
         )
 
         LoadingContent(
-            isLoading = isLoading, isEmpty = data.isEmpty(), onRefresh = onRefresh,
+            isLoading = uiModel.isLoading,
+            isEmpty = uiModel.state is ExercisesUIModel.State.Empty,
+            onRefresh = onRefresh,
             emptyContent = {
                 EmptyContent(modifier)
             },
@@ -99,20 +96,20 @@ private fun ExercisesHome(
                 LazyColumn(
                     contentPadding = PaddingValues(vertical = 6.dp),
                     verticalArrangement = Arrangement.spacedBy(6.dp),
-                    modifier = modifier
+                    modifier = modifier,
                 ) {
-                    items(data) { exercise ->
+                    items(uiModel.state.data, key = { it.id }) { exercise ->
                         ExerciseItem(
                             modifier = modifier,
                             data = exercise,
                             onClick = {
-                                onDetailClicked(Destination.ExerciseDetail(packCode = "pack--$exercise", exerciseCode = "ex--$exercise"))
-                            }
+                                onDetailClicked(Destination.ExerciseDetail(packCode = exercise.packCode, exerciseCode = exercise.id))
+                            },
                         )
                     }
                 }
             },
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -122,17 +119,20 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
     Box(
         modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         Text(
-            text = "No Exercises Found!", modifier = modifier
+            text = "No Exercises Found!",
+            modifier = modifier
                 .align(Alignment.Center)
+                .padding(bottom = 20.dp),
+            color = MaterialTheme.colors.onPrimary,
         )
     }
 }
 
 @Composable
-private fun ExerciseItem(modifier: Modifier = Modifier, data: Exercise, onClick: (Exercise) -> Unit) {
+private fun ExerciseItem(modifier: Modifier = Modifier, data: ExerciseModel, onClick: (ExerciseModel) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -141,11 +141,11 @@ private fun ExerciseItem(modifier: Modifier = Modifier, data: Exercise, onClick:
             .clip(MaterialTheme.shapes.medium)
             .clickable {
                 onClick(data)
-            }
+            },
     ) {
         AsyncImage(
-            model = "https://static.gofitify.com/exercises/kettlebell/thumbnails/kb001_catchers_squat_and_press.jpg",
-            contentDescription = null,
+            model = data.thumbnailUrl,
+            contentDescription = data.name,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(4.dp)
@@ -157,12 +157,11 @@ private fun ExerciseItem(modifier: Modifier = Modifier, data: Exercise, onClick:
             style = MaterialTheme.typography.body1,
             color = MaterialTheme.colors.onPrimary,
             modifier = Modifier.padding(
-                start = 10.dp
+                start = 10.dp,
             ),
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -172,7 +171,6 @@ private fun EmptyPreview() {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
@@ -181,4 +179,3 @@ private fun DefaultPreview() {
 //        ExercisesHome(data = listOf(), isLoading = false, onDetailClicked = {})
     }
 }
-

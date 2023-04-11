@@ -40,6 +40,10 @@ object Versions {
         const val gson = "2.9.0"
     }
 
+    object Local {
+        const val room = "2.5.1"
+    }
+
     object Test {
         const val junit = "4.13.2"
         const val mockk = "1.13.4"

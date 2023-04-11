@@ -28,13 +28,13 @@ fun LoadingContent(
 
     Box(
         modifier = modifier
-            .pullRefresh(pullRefreshState)
+            .pullRefresh(pullRefreshState),
     ) {
         if (isEmpty) emptyContent() else content()
         PullRefreshIndicator(
             refreshing = isLoading,
             state = pullRefreshState,
-            modifier = modifier.align(Alignment.TopCenter)
+            modifier = modifier.align(Alignment.TopCenter),
         )
     }
 }

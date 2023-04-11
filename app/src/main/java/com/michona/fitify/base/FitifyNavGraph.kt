@@ -10,7 +10,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.michona.fitify.feature.detail.ExerciseDetail
 import com.michona.fitify.feature.home.ExercisesHome
-import timber.log.Timber
 
 @Composable
 fun FitifyNavGraph(
@@ -22,7 +21,7 @@ fun FitifyNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = navigationActions.startDestination
+        startDestination = navigationActions.startDestination,
     ) {
         composable(Destination.Home.route) {
             ExercisesHome(onDetailClicked = {
@@ -34,7 +33,7 @@ fun FitifyNavGraph(
             arguments = listOf(
                 navArgument(Destination.ExerciseDetail.ARG_PACK_CODE) { type = NavType.StringType },
                 navArgument(Destination.ExerciseDetail.ARG_EXERCISE_CODE) { type = NavType.StringType },
-            )
+            ),
         ) { entry ->
             val packId = entry.arguments?.getString(Destination.ExerciseDetail.ARG_PACK_CODE) ?: ""
             val exerciseId = entry.arguments?.getString(Destination.ExerciseDetail.ARG_EXERCISE_CODE) ?: ""

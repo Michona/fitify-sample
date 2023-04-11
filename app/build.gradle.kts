@@ -1,6 +1,7 @@
 plugins {
     id(Plugins.androidApplication)
     id(Plugins.kotlinAndroid)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -65,7 +66,16 @@ dependencies {
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:${Versions.Network.retrofit}")
+    implementation("com.squareup.okhttp3:okhttp:${Versions.Network.okHttp}")
+    implementation("com.squareup.retrofit2:converter-gson:${Versions.Network.gson}")
 
+    // Room
+    implementation("androidx.room:room-runtime:${Versions.Local.room}")
+    annotationProcessor("androidx.room:room-compiler:${Versions.Local.room}")
+    ksp("androidx.room:room-compiler:${Versions.Local.room}")
+    implementation("androidx.room:room-ktx:${Versions.Local.room}")
 
     implementation("io.insert-koin:koin-androidx-compose:${Versions.koin}")
     implementation("io.insert-koin:koin-android:${Versions.koin}")
