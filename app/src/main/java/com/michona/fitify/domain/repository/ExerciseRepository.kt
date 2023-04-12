@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -24,13 +24,17 @@ class ExerciseRepository(
     private val exerciseDetailApi: ExerciseDetailApi,
     private val exercisesDao: ExercisesDao,
     private val buildExerciseModel: BuildExerciseModel,
+    private val instructionRepository: InstructionRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
 
     /**
      * TODO: docs
      * */
-    val exercises: Flow<List<ExerciseModel>> = exercisesDao.getAll().map(buildExerciseModel::invoke).catch { emit(listOf()) }
+    val exercises: Flow<List<ExerciseModel>> = combine(exercisesDao.getAll(), instructionRepository.instructions) { local, instructions ->
+        Timber.d("WHAT: ${local.size} -- ${instructions.size}")
+        buildExerciseModel(local, instructions)
+    }.catch { emit(listOf()) }
 
     /**
      * TODO: docs
@@ -45,7 +49,7 @@ class ExerciseRepository(
                 }.flatMap { (key, details) ->
                     /* for every detail data, we build a LocalExercise with the appropriate pack id */
                     details.map { detail ->
-                        LocalExercise(id = detail.code, packId = key.code, instructionHints = detail.instructions?.hints ?: listOf(), title = detail.title)
+                        LocalExercise(id = detail.id, packId = key.code, instructionHints = detail.instructions?.hints ?: listOf(), title = detail.title)
                     }
                 }
 

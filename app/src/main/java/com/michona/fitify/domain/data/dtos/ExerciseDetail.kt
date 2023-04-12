@@ -7,7 +7,7 @@ import com.michona.fitify.domain.data.ExerciseID
 
 data class ExerciseDetail(
     @SerializedName("code")
-    val code: ExerciseID,
+    val id: ExerciseID,
     @SerializedName("title")
     val title: String,
     @SerializedName("instructions")

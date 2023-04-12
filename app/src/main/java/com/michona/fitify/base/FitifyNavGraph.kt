@@ -23,22 +23,19 @@ fun FitifyNavGraph(
         navController = navController,
         startDestination = navigationActions.startDestination,
     ) {
-        composable(Destination.Home.route) {
+        composable(DeclarativeRoute.HOME) {
             ExercisesHome(onDetailClicked = {
                 navigationActions.navigate(it)
             })
         }
         composable(
-            Destination.ExerciseDetail.default.route,
+            DeclarativeRoute.EXERCISE_DETAIL,
             arguments = listOf(
-                navArgument(Destination.ExerciseDetail.ARG_PACK_CODE) { type = NavType.StringType },
                 navArgument(Destination.ExerciseDetail.ARG_EXERCISE_CODE) { type = NavType.StringType },
             ),
         ) { entry ->
-            val packId = entry.arguments?.getString(Destination.ExerciseDetail.ARG_PACK_CODE) ?: ""
             val exerciseId = entry.arguments?.getString(Destination.ExerciseDetail.ARG_EXERCISE_CODE) ?: ""
-
-            ExerciseDetail(packId, exerciseId, onBack = { navigationActions.navigateBack() })
+            ExerciseDetail(exerciseId, onBack = { navigationActions.navigateBack() })
         }
     }
 }

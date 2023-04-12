@@ -103,7 +103,7 @@ private fun ExercisesHome(
                             modifier = modifier,
                             data = exercise,
                             onClick = {
-                                onDetailClicked(Destination.ExerciseDetail(packCode = exercise.packCode, exerciseCode = exercise.id))
+                                onDetailClicked(Destination.ExerciseDetail(exerciseCode = exercise.id))
                             },
                         )
                     }

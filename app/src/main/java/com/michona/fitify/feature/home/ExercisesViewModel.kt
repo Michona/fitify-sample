@@ -28,6 +28,10 @@ class ExercisesViewModel(private val repository: ExerciseRepository) : ViewModel
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExercisesUIModel.default)
 
+    init {
+        refresh()
+    }
+
     fun refresh() {
         viewModelScope.launch {
             _isLoading.value = true
