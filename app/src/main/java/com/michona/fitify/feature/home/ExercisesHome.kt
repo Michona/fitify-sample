@@ -61,7 +61,7 @@ private fun ExercisesHome(
                 .align(Alignment.CenterHorizontally),
         )
 
-        /* todo: should be moved in a reusable container for text fields.  */
+        /* potentially should be moved in a reusable container for text fields.  */
         OutlinedTextField(
             value = query,
             singleLine = true,
