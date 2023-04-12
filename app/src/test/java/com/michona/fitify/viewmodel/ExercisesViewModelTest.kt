@@ -4,6 +4,7 @@ import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.domain.repository.ExerciseRepository
 import com.michona.fitify.feature.home.ExercisesUIModel
 import com.michona.fitify.feature.home.ExercisesViewModel
+import com.michona.fitify.navigation.INavigator
 import com.michona.fitify.rules.MainCoroutineRule
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -27,6 +28,10 @@ class ExercisesViewModelTest {
     @MockK
     private lateinit var exerciseRepository: ExerciseRepository
 
+    @MockK
+    private lateinit var navigator: INavigator
+
+
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxed = true)
@@ -39,7 +44,7 @@ class ExercisesViewModelTest {
         every { exerciseRepository.exercises } returns exerciseMockFlow
         coEvery { exerciseRepository.fetch() } just runs
 
-        exercisesViewModel = ExercisesViewModel(exerciseRepository)
+        exercisesViewModel = ExercisesViewModel(exerciseRepository, navigator)
 
         val mockExerciseModels = listOf(
             ExerciseModel(id = "id", packCode = "pack", instructionsExpanded = "instructions", name = "name"),
