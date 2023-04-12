@@ -31,6 +31,12 @@ It's my first take on Compose app and I'm sure there are aspects that could be i
 looked into it and used it, the better it feels.
 Writing UI code becomes efficient and fast.
 
+## Theming
+
+On a larger project, more focus should be put to Theming and Styling. I've used a basic setup here,
+but in an app with multiple screens and reusable components, it's worth investing more time into
+making a style/theme system that fits. Material Design is a good approach.
+
 ## Final thoughts
 
 I would love to talk more about architecture and solutions for different problems of large scale
