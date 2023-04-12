@@ -9,14 +9,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 
 // TODO:
 
 @Composable
-fun TitledTopBar(title: String, onBack: () -> Unit) {
+fun TitledTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier) {
     TopAppBar(
         title = {
-            Text(text = title)
+            Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
         },
         navigationIcon = {
             IconButton(onClick = onBack) {

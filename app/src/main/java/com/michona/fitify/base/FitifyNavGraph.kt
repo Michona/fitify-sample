@@ -1,5 +1,6 @@
-package com.michona.fitify.navigation
+package com.michona.fitify.base
 
+import ExerciseDetail
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
@@ -8,8 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.michona.fitify.feature.detail.ExerciseDetail
 import com.michona.fitify.feature.home.ExercisesHome
+import com.michona.fitify.navigation.DeclarativeRoute
+import com.michona.fitify.navigation.Destination
+import com.michona.fitify.navigation.NavigationActions
 
 @Composable
 fun FitifyNavGraph(

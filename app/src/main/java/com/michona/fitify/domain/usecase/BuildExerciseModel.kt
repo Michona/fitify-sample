@@ -13,7 +13,7 @@ class BuildExerciseModel {
         ExerciseModel(
             id = local.id,
             packCode = local.packId,
-            instructionsExpanded = local.instructionHints.fold("") { acc, next -> "$acc ${instructions[next]}" },
+            instructionsExpanded = local.instructionHints.fold("") { acc, next -> "$acc${instructions[next]} " },
             name = local.title,
         )
     }

@@ -10,5 +10,5 @@ data class ExerciseModel(val id: ExerciseID, val packCode: PackID, val instructi
         get() = "https://static.gofitify.com/exercises/$packCode/thumbnails/$id.jpg"
 
     val instructionVideoUrl: String
-        get() = ""
+        get() = "https://static.gofitify.com/exercises/$packCode/videos/$id.mp4"
 }

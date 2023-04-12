@@ -3,7 +3,5 @@
 
     <style name="Theme.Fitify" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/blue</item>
-        <item name="android:background">@color/blue</item>
-        <item name="background">@color/blue</item>
     </style>
 </resources>

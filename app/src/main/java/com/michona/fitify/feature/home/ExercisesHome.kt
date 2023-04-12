@@ -58,8 +58,8 @@ private fun ExercisesHome(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = stringResource(id = R.string.content_descr_logo),
             modifier = modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 8.dp),
+                .padding(top = 16.dp)
+                .align(Alignment.CenterHorizontally),
         )
 
         /* todo: should be moved in a reusable container for text fields.  */
@@ -69,6 +69,7 @@ private fun ExercisesHome(
             leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
             modifier = Modifier
                 .padding(8.dp)
+                .padding(top = 8.dp)
                 .fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             placeholder = { Text(text = "Search") },
@@ -124,8 +125,8 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
         Text(
             text = "No Exercises Found!",
             modifier = modifier
-                .align(Alignment.Center)
-                .padding(bottom = 20.dp),
+                .align(Alignment.TopCenter)
+                .padding(top = 30.dp),
             color = MaterialTheme.colors.onPrimary,
         )
     }

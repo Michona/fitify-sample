@@ -33,7 +33,4 @@ sealed class ExerciseDetailUIModel {
 
     val title: String
         get() = if (this is Loaded) this.data.name else ""
-
-    val instruction: String
-        get() = if (this is Loaded) this.data.instructionsExpanded else ""
 }

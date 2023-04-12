@@ -1,15 +1,24 @@
-package com.michona.fitify.feature.detail
-
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import android.net.Uri
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player.REPEAT_MODE_ALL
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import com.michona.fitify.domain.data.ExerciseID
+import com.michona.fitify.feature.detail.ExerciseDetailUIModel
+import com.michona.fitify.feature.detail.ExerciseDetailViewModel
 import com.michona.fitify.ui.common.TitledTopBar
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -19,17 +28,66 @@ fun ExerciseDetail(exerciseID: ExerciseID, onBack: () -> Unit, modifier: Modifie
     val viewModel: ExerciseDetailViewModel = koinViewModel(parameters = { parametersOf(exerciseID) })
     val data = viewModel.uiModel.collectAsStateWithLifecycle()
 
-    // TODO: ?
-    ExerciseDetail(data = data.value, onBack = onBack, modifier = modifier)
+    ExerciseDetail(model = data.value, onBack = onBack, modifier = modifier)
 }
 
 @Composable
-fun ExerciseDetail(data: ExerciseDetailUIModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun ExerciseDetail(model: ExerciseDetailUIModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
     Scaffold(modifier = modifier.fillMaxSize(), topBar = {
-        TitledTopBar(title = data.title, onBack = { onBack() })
+        TitledTopBar(title = model.title, onBack = { onBack() }, modifier)
     }) {
-        Box(modifier = modifier.padding(it)) {
-            Text(text = data.instruction, modifier = Modifier.align(Alignment.Center))
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(it),
+        ) {
+            if (model is ExerciseDetailUIModel.Loaded) {
+                Box(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                ) {
+                    VideoPlayer(modifier, model.data.instructionVideoUrl)
+                }
+
+                Text(
+                    text = model.data.instructionsExpanded,
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .padding(top = 10.dp),
+                    style = MaterialTheme.typography.body2,
+                    textAlign = TextAlign.Start,
+                )
+            }
         }
+    }
+}
+
+@Composable
+fun VideoPlayer(modifier: Modifier = Modifier, url: String) {
+    val context = LocalContext.current
+
+    val exoPlayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            setMediaItem(MediaItem.Builder().setUri(Uri.parse(url)).build())
+            prepare()
+            playWhenReady = true
+            repeatMode = REPEAT_MODE_ALL
+        }
+    }
+
+    DisposableEffect(
+        AndroidView(
+            factory = {
+                PlayerView(it).also {
+                    it.player = exoPlayer
+                }
+            },
+            modifier = modifier
+                .fillMaxWidth()
+                .aspectRatio(16 / 9f),
+        ),
+    ) {
+        onDispose { exoPlayer.release() }
     }
 }

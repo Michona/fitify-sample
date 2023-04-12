@@ -66,6 +66,9 @@ dependencies {
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
+    implementation("androidx.media3:media3-exoplayer:1.0.0")
+    implementation("androidx.media3:media3-ui:1.0.0")
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:${Versions.Network.retrofit}")
     implementation("com.squareup.okhttp3:okhttp:${Versions.Network.okHttp}")
