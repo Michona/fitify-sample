@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ExerciseDetailViewModel(private val exerciseId: ExerciseID, exerciseRepository: ExerciseRepository, instructionRepository: InstructionRepository) : ViewModel() {
-
     init {
         viewModelScope.launch {
             instructionRepository.loadInstructions()

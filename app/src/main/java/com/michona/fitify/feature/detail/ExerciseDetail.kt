@@ -63,6 +63,8 @@ fun ExerciseDetail(model: ExerciseDetailUIModel, onBack: () -> Unit, modifier: M
     }
 }
 
+/* this is a super basic implementation of ExoPlayer. I don't think it was a main point in the task, so I left it like this. */
+
 @Composable
 fun VideoPlayer(modifier: Modifier = Modifier, url: String) {
     val context = LocalContext.current

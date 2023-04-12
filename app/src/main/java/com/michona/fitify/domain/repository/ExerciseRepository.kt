@@ -9,7 +9,6 @@ import com.michona.fitify.domain.remote.api.ExerciseDetailApi
 import com.michona.fitify.domain.remote.api.ExercisePackApi
 import com.michona.fitify.domain.usecase.BuildExerciseModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
@@ -25,14 +24,13 @@ class ExerciseRepository(
     private val exercisesDao: ExercisesDao,
     private val buildExerciseModel: BuildExerciseModel,
     private val instructionRepository: InstructionRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineDispatcher,
 ) {
 
     /**
      * TODO: docs
      * */
     val exercises: Flow<List<ExerciseModel>> = combine(exercisesDao.getAll(), instructionRepository.instructions) { local, instructions ->
-        Timber.d("WHAT: ${local.size} -- ${instructions.size}")
         buildExerciseModel(local, instructions)
     }.catch { emit(listOf()) }
 

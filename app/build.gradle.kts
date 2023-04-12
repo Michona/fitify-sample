@@ -74,6 +74,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${Versions.Network.okHttp}")
     implementation("com.squareup.retrofit2:converter-gson:${Versions.Network.gson}")
 
+    // Koin for Tests
+
     // Room
     implementation("androidx.room:room-runtime:${Versions.Local.room}")
     annotationProcessor("androidx.room:room-compiler:${Versions.Local.room}")
@@ -84,6 +86,10 @@ dependencies {
     implementation("io.insert-koin:koin-android:${Versions.koin}")
     implementation("io.insert-koin:koin-core:${Versions.koin}")
 
+    testImplementation("io.insert-koin:koin-test-junit4:${Versions.koin}")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
+    testImplementation("io.mockk:mockk:${Versions.Test.mockk}")
     testImplementation("junit:junit:${Versions.Test.junit}")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
