@@ -11,8 +11,9 @@ import androidx.compose.ui.Modifier
 
 /**
  * Display an initial empty state or swipe to refresh content.
+ * Used as a container for content that needs swipe as well as empty state.
  *
- * TODO: docs
+ * Uses [Modifier.pullRefresh] under the hood.
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

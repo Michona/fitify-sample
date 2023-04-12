@@ -14,9 +14,11 @@ import com.michona.fitify.navigation.DeclarativeRoute
 import com.michona.fitify.navigation.Destination
 import com.michona.fitify.navigation.NavigationActions
 
+/**
+ * Builds the top level [NavHost] and defines all the routes for the [NavigationActions]
+ * */
 @Composable
 fun FitifyNavGraph(
-    // TODO: group into appstate?
     navController: NavHostController = rememberNavController(),
     navigationActions: NavigationActions = remember(navController) {
         NavigationActions(navController)

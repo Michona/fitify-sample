@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 /**
- * TODO: docs
+ * Contains logic for fetching/updating exercises. It updates the local database and maps the data classes to the exposed [ExerciseModel].
  * */
 class ExerciseRepository(
     private val packApi: ExercisePackApi,
@@ -27,15 +27,12 @@ class ExerciseRepository(
     private val dispatcher: CoroutineDispatcher,
 ) {
 
-    /**
-     * TODO: docs
-     * */
     val exercises: Flow<List<ExerciseModel>> = combine(exercisesDao.getAll(), instructionRepository.instructions) { local, instructions ->
         buildExerciseModel(local, instructions)
     }.catch { emit(listOf()) }
 
     /**
-     * TODO: docs
+     * Fetches latest data from server and updates the appropriate local database.
      * */
     suspend fun fetch() {
         withContext(dispatcher) {
@@ -43,7 +40,7 @@ class ExerciseRepository(
                 /* fetch all details */
                 val localExercises = it.tools.associateWith { pack ->
                     /* if there are exercises in a pack, we associate it with the pack */
-                    exerciseDetailApi.getExerciseDetail(packCode = pack.code).body()?.exercises ?: listOf()
+                    exerciseDetailApi.getExercisesFrom(packCode = pack.code).body()?.exercises ?: listOf()
                 }.flatMap { (key, details) ->
                     /* for every detail data, we build a LocalExercise with the appropriate pack id */
                     details.map { detail ->

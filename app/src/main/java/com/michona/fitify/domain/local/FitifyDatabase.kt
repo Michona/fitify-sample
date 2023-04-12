@@ -23,7 +23,7 @@ abstract class FitifyDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context,
                     FitifyDatabase::class.java,
-                    "app_database",
+                    "fitify.main.database",
                 ).build()
                 INSTANCE = instance
 

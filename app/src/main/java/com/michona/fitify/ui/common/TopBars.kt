@@ -12,8 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
-// TODO:
-
+/**
+ * A [TopAppBar] with a simple title and an [Icons.Filled.ArrowBack] for the back button.
+ * */
 @Composable
 fun TitledTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier) {
     TopAppBar(

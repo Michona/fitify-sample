@@ -2,11 +2,11 @@ package com.michona.fitify.feature.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michona.fitify.domain.WhileUiSubscribed
 import com.michona.fitify.domain.data.ExerciseID
 import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.domain.repository.ExerciseRepository
 import com.michona.fitify.domain.repository.InstructionRepository
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -15,13 +15,14 @@ import kotlinx.coroutines.launch
 class ExerciseDetailViewModel(private val exerciseId: ExerciseID, exerciseRepository: ExerciseRepository, instructionRepository: InstructionRepository) : ViewModel() {
     init {
         viewModelScope.launch {
+            /* everytime we open the detail screen, we try to load instructions */
             instructionRepository.loadInstructions()
         }
     }
 
     val uiModel: StateFlow<ExerciseDetailUIModel> = exerciseRepository.exercises.map {
         it.find { model -> model.id == exerciseId }
-    }.map { if (it == null) ExerciseDetailUIModel.Empty else ExerciseDetailUIModel.Loaded(it) }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExerciseDetailUIModel.Empty)
+    }.map { if (it == null) ExerciseDetailUIModel.Empty else ExerciseDetailUIModel.Loaded(it) }.stateIn(viewModelScope, WhileUiSubscribed, ExerciseDetailUIModel.Empty)
 }
 
 sealed class ExerciseDetailUIModel {

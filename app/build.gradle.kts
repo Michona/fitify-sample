@@ -1,7 +1,7 @@
 plugins {
     id(Plugins.androidApplication)
     id(Plugins.kotlinAndroid)
-    id("com.google.devtools.ksp")
+    id(Plugins.ksp)
 }
 
 android {
@@ -52,29 +52,27 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:${Versions.Android.coreKtx}")
+
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.Android.lifecycleKtx}")
     implementation("androidx.activity:activity-compose:${Versions.Android.Compose.activity}")
     implementation("androidx.compose.ui:ui:${Versions.Android.Compose.ui}")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:${Versions.Android.Compose.lifecycle}")
     implementation("androidx.compose.ui:ui-tooling-preview:${Versions.Android.Compose.ui}")
-    implementation("androidx.compose.material:material:${Versions.Android.material}")
     implementation("androidx.navigation:navigation-compose:${Versions.Android.Compose.navigation}")
 
-    // TODO: add to Dependency
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation("androidx.compose.material:material:${Versions.Android.material}")
 
-    implementation("io.coil-kt:coil-compose:2.3.0")
+    implementation("io.coil-kt:coil-compose:${Versions.coil}")
 
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.jakewharton.timber:timber:${Versions.timber}")
 
-    implementation("androidx.media3:media3-exoplayer:1.0.0")
-    implementation("androidx.media3:media3-ui:1.0.0")
+    implementation("androidx.media3:media3-exoplayer:${Versions.Android.media3}")
+    implementation("androidx.media3:media3-ui:${Versions.Android.media3}")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:${Versions.Network.retrofit}")
     implementation("com.squareup.okhttp3:okhttp:${Versions.Network.okHttp}")
     implementation("com.squareup.retrofit2:converter-gson:${Versions.Network.gson}")
-
-    // Koin for Tests
 
     // Room
     implementation("androidx.room:room-runtime:${Versions.Local.room}")
@@ -91,8 +89,6 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
     testImplementation("io.mockk:mockk:${Versions.Test.mockk}")
     testImplementation("junit:junit:${Versions.Test.junit}")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.Android.Compose.ui}")
     debugImplementation("androidx.compose.ui:ui-tooling:${Versions.Android.Compose.ui}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.Android.Compose.ui}")

@@ -6,19 +6,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michona.fitify.domain.WhileUiSubscribed
 import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.domain.repository.ExerciseRepository
-import kotlinx.coroutines.flow.*
+import com.michona.fitify.domain.withLoading
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ExercisesViewModel(private val repository: ExerciseRepository) : ViewModel() {
+class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
 
+    /**
+     * A compose State connected to the SearchBar TextField
+     *  */
     var exerciseQuery by mutableStateOf("")
         private set
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    val uiModel: StateFlow<ExercisesUIModel> = combine(repository.exercises, _isLoading, snapshotFlow { exerciseQuery }) { exercises, isLoading, query ->
+    val uiModel: StateFlow<ExercisesUIModel> = combine(exerciseRepository.exercises, _isLoading, snapshotFlow { exerciseQuery }) { exercises, isLoading, query ->
         val filteredExercises = exercises.filter {
             it.name.contains(query, ignoreCase = true)
         }
@@ -26,17 +34,20 @@ class ExercisesViewModel(private val repository: ExerciseRepository) : ViewModel
             isLoading = isLoading,
             state = if (filteredExercises.isEmpty()) ExercisesUIModel.State.Empty else ExercisesUIModel.State.Loaded(data = filteredExercises),
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExercisesUIModel.default)
+    }.stateIn(viewModelScope, WhileUiSubscribed, ExercisesUIModel.default)
 
     init {
         refresh()
     }
 
+    /**
+     * Tries to reload (re-fetch) from [exerciseRepository]. Called when swipe-to-refresh and on screen start.
+     * */
     fun refresh() {
         viewModelScope.launch {
-            _isLoading.value = true
-            repository.fetch()
-            _isLoading.value = false
+            withLoading(_isLoading) {
+                exerciseRepository.fetch()
+            }
         }
     }
 

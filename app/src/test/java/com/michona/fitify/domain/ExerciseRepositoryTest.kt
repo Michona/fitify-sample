@@ -55,7 +55,7 @@ class ExerciseRepositoryTest {
                 ),
             ),
         )
-        coEvery { exerciseDetailApi.getExerciseDetail(any()) } returns Response.success(
+        coEvery { exerciseDetailApi.getExercisesFrom(any()) } returns Response.success(
             ExerciseDetailContainer(
                 exercises = listOf(
                     ExerciseDetail(id = "ex_id", title = "title", instructions = null),
@@ -69,7 +69,7 @@ class ExerciseRepositoryTest {
         repo.fetch()
 
         coVerify(exactly = 1) { packApi.getPacks() }
-        coVerify(exactly = 2) { exerciseDetailApi.getExerciseDetail("pack_id") }
+        coVerify(exactly = 2) { exerciseDetailApi.getExercisesFrom("pack_id") }
         coVerify(exactly = 1) { exercisesDao.upsertAll(*anyVararg()) }
     }
 
@@ -83,7 +83,7 @@ class ExerciseRepositoryTest {
         repo.fetch()
 
         coVerify(exactly = 1) { packApi.getPacks() }
-        coVerify(exactly = 0) { exerciseDetailApi.getExerciseDetail(any()) }
+        coVerify(exactly = 0) { exerciseDetailApi.getExercisesFrom(any()) }
         coVerify(exactly = 0) { exercisesDao.upsertAll(*anyVararg()) }
     }
 }

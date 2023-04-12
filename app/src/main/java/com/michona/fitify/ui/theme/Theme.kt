@@ -41,7 +41,6 @@ private object SecondaryRippleTheme : RippleTheme {
         lightTheme = MaterialTheme.colors.isLight,
     )
 
-    // TODO: Increase pressed alpha?
     @Composable
     override fun rippleAlpha() = RippleTheme.defaultRippleAlpha(
         contentColor = Color.White,

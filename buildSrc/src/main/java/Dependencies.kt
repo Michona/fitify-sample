@@ -4,6 +4,7 @@ object Plugins {
     const val javaLibrary = "java-library"
     const val kotlinAndroid = "kotlin-android"
     const val kotlin = "kotlin"
+    const val ksp = "com.google.devtools.ksp"
 }
 
 object Modules {
@@ -27,11 +28,14 @@ object Versions {
             const val ui = "1.4.1"
             const val activity = "1.7.0"
             const val navigation = "2.5.3"
+            const val lifecycle = "2.6.1"
         }
 
         const val lifecycleKtx = "2.6.1"
         const val coreKtx = "1.10.0"
         const val material = "1.4.1"
+
+        const val media3 = "1.0.0"
     }
 
     object Network {
@@ -48,6 +52,9 @@ object Versions {
         const val junit = "4.13.2"
         const val mockk = "1.13.4"
     }
+
+    const val coil = "2.3.0"
+    const val timber = "5.0.1"
 
     const val koin = "3.4.0"
     const val coroutines = "1.6.4"

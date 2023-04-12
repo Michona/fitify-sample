@@ -72,7 +72,7 @@ private fun ExercisesHome(
                 .padding(top = 8.dp)
                 .fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            placeholder = { Text(text = "Search") },
+            placeholder = { Text(text = stringResource(id = R.string.search_hint)) },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = MaterialTheme.colors.secondary,
                 cursorColor = MaterialTheme.colors.onPrimary,
@@ -123,7 +123,7 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             .verticalScroll(rememberScrollState()),
     ) {
         Text(
-            text = "No Exercises Found!",
+            text = stringResource(id = R.string.exercises_empty),
             modifier = modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 30.dp),
@@ -176,7 +176,6 @@ private fun EmptyPreview() {
 @Composable
 private fun DefaultPreview() {
     FitifyTheme {
-        // TODO : ?
-//        ExercisesHome(data = listOf(), isLoading = false, onDetailClicked = {})
+        ExercisesHome(uiModel = ExercisesUIModel.default, query = "", onQueryUpdate = {}, onDetailClicked = {})
     }
 }

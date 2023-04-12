@@ -22,6 +22,8 @@ private fun provideOkHttpClient(): OkHttpClient {
 }
 
 private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    return Retrofit.Builder().baseUrl("https://static.gofitify.com").client(okHttpClient)
+    return Retrofit.Builder().baseUrl(SERVER_URL_BASE).client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create()).build()
 }
+
+const val SERVER_URL_BASE = "https://static.gofitify.com"
