@@ -6,6 +6,8 @@ import com.michona.fitify.domain.repository.InstructionRepository
 import com.michona.fitify.domain.usecase.BuildExerciseModel
 import com.michona.fitify.feature.detail.ExerciseDetailViewModel
 import com.michona.fitify.feature.home.ExercisesViewModel
+import com.michona.fitify.navigation.INavigator
+import com.michona.fitify.navigation.INavigatorImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -16,12 +18,14 @@ import org.koin.dsl.onClose
 
 val appModule = module {
     viewModelOf(::ExercisesViewModel)
-    viewModel { (exerciseId: ExerciseID) -> ExerciseDetailViewModel(exerciseId, get(), get()) }
+    viewModel { (exerciseId: ExerciseID) -> ExerciseDetailViewModel(exerciseId, get(), get(), get()) }
 
     // domain
     single { InstructionRepository(androidContext(), get()) } onClose { it?.close() }
     singleOf(::ExerciseRepository)
     singleOf(::BuildExerciseModel)
+
+    single<INavigator> { INavigatorImpl() }
 }
 
 val dispatchersKoinModule = module {

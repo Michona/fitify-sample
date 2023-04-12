@@ -22,13 +22,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.michona.fitify.R
 import com.michona.fitify.domain.data.ExerciseModel
-import com.michona.fitify.navigation.Destination
 import com.michona.fitify.ui.common.LoadingContent
 import com.michona.fitify.ui.theme.FitifyTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ExercisesHome(exerciseViewModel: ExercisesViewModel = koinViewModel(), onDetailClicked: (Destination.ExerciseDetail) -> Unit) {
+fun ExercisesHome(exerciseViewModel: ExercisesViewModel = koinViewModel()) {
     val uiModel = exerciseViewModel.uiModel.collectAsStateWithLifecycle()
 
     ExercisesHome(
@@ -36,7 +35,7 @@ fun ExercisesHome(exerciseViewModel: ExercisesViewModel = koinViewModel(), onDet
         query = exerciseViewModel.exerciseQuery,
         onQueryUpdate = exerciseViewModel::updateQuery,
         onRefresh = exerciseViewModel::refresh,
-        onDetailClicked = onDetailClicked,
+        onDetailClicked = exerciseViewModel::onDetailClicked,
     )
 }
 
@@ -47,7 +46,7 @@ private fun ExercisesHome(
     query: String,
     onRefresh: () -> Unit = {},
     onQueryUpdate: (String) -> Unit,
-    onDetailClicked: (Destination.ExerciseDetail) -> Unit,
+    onDetailClicked: (ExerciseModel) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -104,7 +103,7 @@ private fun ExercisesHome(
                             modifier = modifier,
                             data = exercise,
                             onClick = {
-                                onDetailClicked(Destination.ExerciseDetail(exerciseCode = exercise.id))
+                                onDetailClicked(exercise)
                             },
                         )
                     }

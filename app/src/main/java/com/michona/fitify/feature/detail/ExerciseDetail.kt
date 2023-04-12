@@ -24,11 +24,11 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
-fun ExerciseDetail(exerciseID: ExerciseID, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun ExerciseDetail(exerciseID: ExerciseID, modifier: Modifier = Modifier) {
     val viewModel: ExerciseDetailViewModel = koinViewModel(parameters = { parametersOf(exerciseID) })
     val data = viewModel.uiModel.collectAsStateWithLifecycle()
 
-    ExerciseDetail(model = data.value, onBack = onBack, modifier = modifier)
+    ExerciseDetail(model = data.value, onBack = viewModel::tryNavigateBack, modifier = modifier)
 }
 
 @Composable

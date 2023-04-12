@@ -1,18 +1,24 @@
 package com.michona.fitify.feature.detail
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michona.fitify.domain.WhileUiSubscribed
 import com.michona.fitify.domain.data.ExerciseID
 import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.domain.repository.ExerciseRepository
 import com.michona.fitify.domain.repository.InstructionRepository
+import com.michona.fitify.feature.BaseViewModel
+import com.michona.fitify.navigation.INavigator
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ExerciseDetailViewModel(private val exerciseId: ExerciseID, exerciseRepository: ExerciseRepository, instructionRepository: InstructionRepository) : ViewModel() {
+class ExerciseDetailViewModel(
+    private val exerciseId: ExerciseID,
+    exerciseRepository: ExerciseRepository,
+    instructionRepository: InstructionRepository,
+    private val navigator: INavigator,
+) : BaseViewModel(), INavigator by navigator {
     init {
         viewModelScope.launch {
             /* everytime we open the detail screen, we try to load instructions */

@@ -4,19 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michona.fitify.domain.WhileUiSubscribed
 import com.michona.fitify.domain.data.ExerciseModel
 import com.michona.fitify.domain.repository.ExerciseRepository
 import com.michona.fitify.domain.withLoading
+import com.michona.fitify.feature.BaseViewModel
+import com.michona.fitify.navigation.Destination
+import com.michona.fitify.navigation.INavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : ViewModel() {
+class ExercisesViewModel(private val exerciseRepository: ExerciseRepository, private val navigator: INavigator) : BaseViewModel() {
 
     /**
      * A compose State connected to the SearchBar TextField
@@ -48,6 +50,12 @@ class ExercisesViewModel(private val exerciseRepository: ExerciseRepository) : V
             withLoading(_isLoading) {
                 exerciseRepository.fetch()
             }
+        }
+    }
+
+    fun onDetailClicked(exerciseModel: ExerciseModel) {
+        navigateWith(navigator) {
+            navigateTo(Destination.ExerciseDetail(exerciseCode = exerciseModel.id))
         }
     }
 
