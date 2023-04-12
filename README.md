@@ -7,8 +7,7 @@ This is a sample app written as a part a test task for Fitify.
 This app follows simple clean architecture with domain and UI layer.
 There is a uni-directional data flow utilizing *ViewModels* and *Flows*. It borrows some principles
 from functional programming for the data layer. It uses coroutines and latest JetPack libraries.
-It uses *Compose* for the UI. It's an offline-first approach with local *Room* database and *
-Retrofit* for the network requests.
+It uses *Compose* for the UI. It's an offline-first approach with local *Room* database and *Retrofit* for the network requests.
 
 ## Modularization
 
