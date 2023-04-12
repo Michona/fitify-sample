@@ -36,22 +36,27 @@ class ExerciseRepository(
      * */
     suspend fun fetch() {
         withContext(dispatcher) {
-            packApi.getPacks().onSuccess {
-                /* fetch all details */
-                val localExercises = it.tools.associateWith { pack ->
-                    /* if there are exercises in a pack, we associate it with the pack */
-                    exerciseDetailApi.getExercisesFrom(packCode = pack.code).body()?.exercises ?: listOf()
-                }.flatMap { (key, details) ->
-                    /* for every detail data, we build a LocalExercise with the appropriate pack id */
-                    details.map { detail ->
-                        LocalExercise(id = detail.id, packId = key.code, instructionHints = detail.instructions?.hints ?: listOf(), title = detail.title)
+            try {
+                packApi.getPacks().onSuccess {
+                    /* fetch all details */
+                    val localExercises = it.tools.associateWith { pack ->
+                        /* if there are exercises in a pack, we associate it with the pack */
+                        exerciseDetailApi.getExercisesFrom(packCode = pack.code).body()?.exercises ?: listOf()
+                    }.flatMap { (key, details) ->
+                        /* for every detail data, we build a LocalExercise with the appropriate pack id */
+                        details.map { detail ->
+                            LocalExercise(id = detail.id, packId = key.code, instructionHints = detail.instructions?.hints ?: listOf(), title = detail.title)
+                        }
                     }
-                }
 
-                /* save the built exercise data to the local database */
-                exercisesDao.upsertAll(*localExercises.toTypedArray())
-            }.onError {
-                Timber.e(it)
+                    /* save the built exercise data to the local database */
+                    exercisesDao.upsertAll(*localExercises.toTypedArray())
+                }.onError {
+                    Timber.e(it)
+                }
+            } catch (e: Exception) {
+                /* these errors should be handled. */
+                Timber.e(e)
             }
         }
     }
